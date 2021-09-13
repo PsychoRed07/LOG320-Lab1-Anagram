@@ -7,8 +7,8 @@ import java.util.List;
 public class Anagramme {
 
     public static boolean isAnagramme_First(String chaine1, String chaine2) {
-        chaine1 = chaine1.replaceAll("\s", "");
-        chaine2 = chaine2.replaceAll("\s", "");
+        chaine1 = chaine1.replaceAll("\\s", "");
+        chaine2 = chaine2.replaceAll("\\s", "");
 
         if (chaine1.length() != chaine2.length()) {
             return false;

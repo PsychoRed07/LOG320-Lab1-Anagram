@@ -1,7 +1,8 @@
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Anagramme {
@@ -40,45 +41,29 @@ public class Anagramme {
 
         if (chaine1.length() != chaine2.length()) return false;
 
-        char[] charArray1 = chaine1.toCharArray();
-        char[] charArray2 = chaine2.toCharArray();
+        int[] pool = new int[26];
 
-        Arrays.sort(charArray1);
-        Arrays.sort(charArray2);
-
-        for (int i = 0; i < charArray1.length; i++) {
-
-            if (charArray1[i] != charArray2[i]) {
+        for (int i = 0; i < chaine2.length(); i++) {
+            pool[chaine1.charAt(i) - 'a']++;
+            pool[chaine2.charAt(i) - 'a']--;
+        }
+        for (int lettre : pool) {
+            if (lettre != 0) {
                 return false;
             }
-
         }
         return true;
-
-    }
-
-    public static void testAlgorithmeSpeed() {
-        long startTime1 = System.nanoTime();
-        boolean resultat1 = isAnagramme_First("b  a  a d a", "aaabd");
-        long endTime1 = System.nanoTime();
-
-        long startTime2 = System.nanoTime();
-        boolean resultat2 = isAnagramme_Second("b  a  a d a", "aaabd");
-        long endTime2 = System.nanoTime();
-
-        System.out.println("First algorithme : " + resultat1 + " " + (double)(endTime1 - startTime1)/1000000 + " ms");
-        System.out.println("Second algorithme : " + resultat2 + " " + (double)(endTime2 - startTime2)/1000000 + " ms");
     }
 
     public static void main(String[] args) throws Exception {
-
+        long startTime1 = System.nanoTime();
         //testAlgorithmeSpeed();
 
-//        File mots = new File(args[0]);
-//        File dict = new File(args[1]);
+        File mots = new File(args[0]);
+        File dict = new File(args[1]);
 
-        File mots = new File("./src/words.txt");
-        File dict = new File("./src/dict.txt");
+        //File mots = new File("./src/words.txt");
+        //File dict = new File("./src/dict.txt");
 
         List<String> Dictionnary = new ArrayList<>();
         List<String> AllWords = new ArrayList<>();
@@ -99,22 +84,23 @@ public class Anagramme {
             AllWords.add(line);
         }
 
-        long startTime1 = System.nanoTime();
+
         for (String words : AllWords) {
             int found = 0;
             for (String words_in_dict : Dictionnary) {
-                if (words_in_dict != null && isAnagramme_First(words, words_in_dict)) {
+                if (words_in_dict != null && isAnagramme_Second(words, words_in_dict)) {
                     found++;
                 }
             }
             Anagramme_found.add(found);
         }
-        long endTime1 = System.nanoTime();
+
 
         for (int i = 0; i < AllWords.size(); i++) {
             System.out.println(AllWords.get(i) + " " + Anagramme_found.get(i));
         }
 
+        long endTime1 = System.nanoTime();
         System.out.println("Second algorithme : " + (double)(endTime1 - startTime1)/1000000 + " ms");
 
     }

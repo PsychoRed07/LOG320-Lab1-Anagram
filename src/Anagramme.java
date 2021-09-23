@@ -18,7 +18,7 @@ public class Anagramme {
         for (char c1 : chaine1.toCharArray()) {
             boolean found = false;
             for (char c2 : chaine2.toCharArray()) {
-                if(!found) {
+                if (!found) {
                     if (c1 == c2) {
                         chaine2 = chaine2.replaceFirst(Character.toString(c2), Character.toString(Character.MIN_VALUE));
                         found = true;
@@ -41,13 +41,23 @@ public class Anagramme {
 
         if (chaine1.length() != chaine2.length()) return false;
 
-        int[] pool = new int[26];
+        int[] minuscule_pool = new int[26];
+        int[] majuscule_pool = new int[10];
 
         for (int i = 0; i < chaine2.length(); i++) {
-            pool[chaine1.charAt(i) - 'a']++;
-            pool[chaine2.charAt(i) - 'a']--;
+
+            if (chaine1.charAt(i) >= 'a') minuscule_pool[chaine1.charAt(i) - 'a']++;
+            if (chaine2.charAt(i) >= 'a') minuscule_pool[chaine2.charAt(i) - 'a']--;
+            if (chaine1.charAt(i) < 'a') majuscule_pool[chaine1.charAt(i) - '0']++;
+            if (chaine2.charAt(i) < 'a') majuscule_pool[chaine2.charAt(i) - '0']--;
         }
-        for (int lettre : pool) {
+        for (int lettre : minuscule_pool) {
+            if (lettre != 0) {
+                return false;
+            }
+        }
+
+        for (int lettre : majuscule_pool) {
             if (lettre != 0) {
                 return false;
             }
@@ -56,8 +66,6 @@ public class Anagramme {
     }
 
     public static void main(String[] args) throws Exception {
-        long startTime1 = System.nanoTime();
-        //testAlgorithmeSpeed();
 
         File mots = new File(args[0]);
         File dict = new File(args[1]);
@@ -99,10 +107,6 @@ public class Anagramme {
         for (int i = 0; i < AllWords.size(); i++) {
             System.out.println(AllWords.get(i) + " " + Anagramme_found.get(i));
         }
-
-        long endTime1 = System.nanoTime();
-        System.out.println("Second algorithme : " + (double)(endTime1 - startTime1)/1000000 + " ms");
-
     }
 
 }

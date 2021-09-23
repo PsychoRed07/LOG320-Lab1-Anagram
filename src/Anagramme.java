@@ -42,14 +42,14 @@ public class Anagramme {
         if (chaine1.length() != chaine2.length()) return false;
 
         int[] minuscule_pool = new int[26];
-        int[] majuscule_pool = new int[10];
+        int[] chiffre_pool = new int[10];
 
         for (int i = 0; i < chaine2.length(); i++) {
 
             if (chaine1.charAt(i) >= 'a') minuscule_pool[chaine1.charAt(i) - 'a']++;
             if (chaine2.charAt(i) >= 'a') minuscule_pool[chaine2.charAt(i) - 'a']--;
-            if (chaine1.charAt(i) < 'a') majuscule_pool[chaine1.charAt(i) - '0']++;
-            if (chaine2.charAt(i) < 'a') majuscule_pool[chaine2.charAt(i) - '0']--;
+            if (chaine1.charAt(i) < 'a') chiffre_pool[chaine1.charAt(i) - '0']++;
+            if (chaine2.charAt(i) < 'a') chiffre_pool[chaine2.charAt(i) - '0']--;
         }
         for (int lettre : minuscule_pool) {
             if (lettre != 0) {
@@ -57,7 +57,7 @@ public class Anagramme {
             }
         }
 
-        for (int lettre : majuscule_pool) {
+        for (int lettre : chiffre_pool) {
             if (lettre != 0) {
                 return false;
             }
